@@ -13,7 +13,7 @@ public class JThreadUtils {
     // region wait
 
     /**
-     * Wait until mutableBoolean == stopState.
+     * Wait until mutableBoolean == stopState. It check the <code>mutableBoolean</code> per 0.1s and the timeout was set as 3s.
      * @param mutableBoolean A mutable boolean
      * @param stopState If mutableBoolean == stopState, it is stop to wait.
      * @return Return false if timeout

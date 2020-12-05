@@ -26,11 +26,11 @@ public class JGeneralUtils {
 
         // Return null
         if (values == null)
-            return "null(int[])";
+            return "int[]{null}";
 
         // Build string
         StringBuilder sb = new StringBuilder();
-        sb.append("new int[" + values.length + "]{");
+        sb.append("int[" + values.length + "]{");
         for (int i = 0; i < values.length; i++) {
 
             if (i != 0)
@@ -53,11 +53,11 @@ public class JGeneralUtils {
 
         // Return null
         if (values == null)
-            return "null(long[])";
+            return "long[]{null}";
 
         // Build string
         StringBuilder sb = new StringBuilder();
-        sb.append("new long[" + values.length + "]{");
+        sb.append("long[" + values.length + "]{");
         for (int i = 0; i < values.length; i++) {
 
             if (i != 0)
@@ -80,11 +80,11 @@ public class JGeneralUtils {
 
         // Return null
         if (values == null)
-            return "null(float[])";
+            return "float[]{null}";
 
         // Build string
         StringBuilder sb = new StringBuilder();
-        sb.append("new float[" + values.length + "]{");
+        sb.append("float[" + values.length + "]{");
         for (int i = 0; i < values.length; i++) {
 
             if (i != 0)
@@ -107,11 +107,38 @@ public class JGeneralUtils {
 
         // Return null
         if (values == null)
-            return "null(double[])";
+            return "double[]{null}";
 
         // Build string
         StringBuilder sb = new StringBuilder();
-        sb.append("new double[" + values.length + "]{");
+        sb.append("double[" + values.length + "]{");
+        for (int i = 0; i < values.length; i++) {
+
+            if (i != 0)
+                sb.append("," + values[i]);
+            else
+                sb.append(values[i]);
+        }
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    /**
+     * Convert boolean[] to string.
+     * 
+     * @param values Values
+     * @return Return the string of boolean[].
+     */
+    public static String toString(boolean[] values) {
+
+        // Return null
+        if (values == null)
+            return "boolean[]{null}";
+
+        // Build string
+        StringBuilder sb = new StringBuilder();
+        sb.append("boolean[" + values.length + "]{");
         for (int i = 0; i < values.length; i++) {
 
             if (i != 0)
@@ -160,6 +187,72 @@ public class JGeneralUtils {
 
         for (int i = 0; i < bytes.length; i++) {
             result[i] = String.format("%02X", bytes[i]);
+        }
+
+        return result;
+    }
+
+    /**
+     * Parse Double which will remove non-numerical char before parse.
+     * 
+     * @param str
+     * @return Return <code>null</code> if not success. Otherwise return the Double.
+     */
+    public static Double parseDouble(String str) {
+
+        Double result = null;
+
+        if (isNullStr(str))
+            return result;
+
+        // Remove non-numerical char
+        String removedStr = "";
+        for (int i = 0; i < str.length(); i++) {
+            char charbuf = str.charAt(i);
+            int ascii = (int) charbuf;
+            if ((ascii >= 48 && ascii <= 57) || (ascii == 46)) {
+                removedStr = removedStr + charbuf;
+            }
+        }
+
+        if (removedStr.length() > 0) {
+            try {
+                result = Double.parseDouble(removedStr);
+            } catch (NumberFormatException e) {
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Parse Integer which will remove non-numerical char before parse.
+     * 
+     * @param str
+     * @return Return <code>null</code> if not success. Otherwise return the
+     *         integer.
+     */
+    public static Integer parseInteger(String str) {
+
+        Integer result = null;
+
+        if (isNullStr(str))
+            return result;
+
+        // Remove non-numerical char
+        String removedStr = "";
+        for (int i = 0; i < str.length(); i++) {
+            char charbuf = str.charAt(i);
+            if ((int) charbuf >= 48 && (int) charbuf <= 57) {
+                removedStr = removedStr + charbuf;
+            }
+        }
+
+        if (removedStr.length() > 0) {
+            try {
+                result = Integer.parseInt(removedStr);
+            } catch (NumberFormatException e) {
+            }
         }
 
         return result;
@@ -288,7 +381,8 @@ public class JGeneralUtils {
     }
 
     /**
-     * Filter out invalid file name character (/ ? &lt; &gt; \ : * | " ^ and last SPACE)
+     * Filter out invalid file name character (/ ? &lt; &gt; \ : * | " ^ and last
+     * SPACE)
      * 
      * @param str String to be filtered
      * @return Return the filtered string
@@ -464,16 +558,16 @@ public class JGeneralUtils {
     }
 
     /**
-     * Create a double sequence with the unity step. <code>end</code> can be
-     * samller than <code>start</code> to create a reverse sequence. e.g. (start =
-     * 2, end = 5) = [2, 3, 4, 5]
+     * Create a double sequence with the unity step. <code>end</code> can be samller
+     * than <code>start</code> to create a reverse sequence. e.g. (start = 2, end =
+     * 5) = [2, 3, 4, 5]
      *
      * @param start start double
      * @param end   end double
      * @return Return a sequence from <code>start</code> to <code>end</code> with
      *         unity step
      */
-    public static double[] createSequence(double start, double end){
+    public static double[] createSequence(double start, double end) {
         return createSequence(start, end, 1.0);
     }
 
@@ -784,18 +878,35 @@ public class JGeneralUtils {
         return result;
     }
 
+    /**
+     * List to array
+     * 
+     * @param list Arraylist
+     * @return Return the array
+     */
+    public static boolean[] list2BoolArr(List<Boolean> list) {
+        boolean[] result = null;
+        if (list != null) {
+            result = new boolean[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                result[i] = list.get(i);
+            }
+        }
+        return result;
+    }
+
     // endregion List to Array
 
     // region Array to list
 
     /**
-     * Array to arraylist
+     * Array to list
      * 
      * @param array Array
-     * @return Return the arraylist
+     * @return Return the list
      */
-    public static List<Integer> Arr2ArrList(int[] array) {
-        List<Integer> result = new ArrayList<Integer>();
+    public static List<Integer> arr2List(int[] array) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 result.add(array[i]);
@@ -805,13 +916,13 @@ public class JGeneralUtils {
     }
 
     /**
-     * Array to arraylist
+     * Array to list
      * 
      * @param array Array
-     * @return Return the arraylist
+     * @return Return the list
      */
-    public static List<Long> Arr2ArrList(long[] array) {
-        List<Long> result = new ArrayList<Long>();
+    public static List<Long> arr2List(long[] array) {
+        ArrayList<Long> result = new ArrayList<Long>();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 result.add(array[i]);
@@ -821,13 +932,13 @@ public class JGeneralUtils {
     }
 
     /**
-     * Array to arraylist
+     * Array to list
      * 
      * @param array Array
-     * @return Return the arraylist
+     * @return Return the list
      */
-    public static List<Float> Arr2ArrList(float[] array) {
-        List<Float> result = new ArrayList<Float>();
+    public static List<Float> arr2List(float[] array) {
+        ArrayList<Float> result = new ArrayList<Float>();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 result.add(array[i]);
@@ -837,13 +948,13 @@ public class JGeneralUtils {
     }
 
     /**
-     * Array to arraylist
+     * Array to list
      * 
      * @param array Array
-     * @return Return the arraylist
+     * @return Return the list
      */
-    public static List<Double> Arr2ArrList(double[] array) {
-        List<Double> result = new ArrayList<Double>();
+    public static List<Double> arr2List(double[] array) {
+        ArrayList<Double> result = new ArrayList<Double>();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 result.add(array[i]);
@@ -853,13 +964,13 @@ public class JGeneralUtils {
     }
 
     /**
-     * Array to arraylist
+     * Array to list
      * 
      * @param array Array
-     * @return Return the arraylist
+     * @return Return the alist
      */
-    public static List<String> Arr2ArrList(String[] array) {
-        List<String> result = new ArrayList<String>();
+    public static List<String> arr2List(String[] array) {
+        ArrayList<String> result = new ArrayList<String>();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 result.add(array[i]);
@@ -869,13 +980,29 @@ public class JGeneralUtils {
     }
 
     /**
-     * Array to arraylist
+     * Array to list
      * 
      * @param array Array
-     * @return Return the arraylist
+     * @return Return the list
      */
-    public static List<Date> Arr2ArrList(Date[] array) {
-        List<Date> result = new ArrayList<Date>();
+    public static List<Date> arr2List(Date[] array) {
+        ArrayList<Date> result = new ArrayList<Date>();
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                result.add(array[i]);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Array to list
+     * 
+     * @param array Array
+     * @return Return the list
+     */
+    public static List<Boolean> arr2List(boolean[] array) {
+        ArrayList<Boolean> result = new ArrayList<Boolean>();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
                 result.add(array[i]);

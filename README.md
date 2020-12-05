@@ -14,7 +14,7 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
-    implementation 'com.github.kcwongjoe:joelib:v0.0.3'
+    implementation 'com.github.kcwongjoe:joelib:v0.0.2'
 }
 ```
 
